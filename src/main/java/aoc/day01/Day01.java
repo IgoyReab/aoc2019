@@ -19,19 +19,20 @@ public class Day01 implements Day {
 
     @Override
     public String part2(List<String> input) {
-        Set<Long> foundFrequencies = new HashSet<>();         // set of Longs, if I add an element that already exists it returns false
+        Set<Long> foundFrequencies = new HashSet<>();
         LongAdder sum = new LongAdder();
         boolean found = false;
 
         int[] freqShifts = input.stream().mapToInt(Integer::parseInt).toArray();
 
         do {
-            for (int freqShift : freqShifts) {                       // loop through the array
-                found = !(foundFrequencies.add(sum.longValue()));    // found becomes true if  an element that already exist is added, if that happens the r
-                if (found) break;
-                sum.add(freqShift);
+            for (int freqShift : freqShifts) {
+                if (!(foundFrequencies.add(sum.longValue()))) {
+                    found = true;
+                    break;
+                } else sum.add(freqShift);
             }
-        } while (!found);                                            // try again if not found
+        } while (!found);
 
         return input.isEmpty() ? "" : sum.toString();
     }
