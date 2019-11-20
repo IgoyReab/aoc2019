@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,8 @@ public class App {
     }
 
     public static void main(String[] args) {
+        LocalTime start = LocalTime.now();
+
         int day = 1;
         if(args.length != 0){
             day = Integer.parseInt(args[0]);
@@ -58,6 +62,9 @@ public class App {
             result = DAYS.get(day).part2(input);
         }
 
-        System.out.println(result);
+        LocalTime finish = LocalTime.now();
+
+        System.out.println("Result day " + day + " part " + part + " = " + result);
+        System.out.println("Duration (ms): " + Duration.between(start, finish).toMillis());
     }
 }
