@@ -21,9 +21,12 @@ repositories {
 }
 
 dependencies {
+    compile(group: 'com.google.guava', name: 'guava', version: 21.0)
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 }
+
+
 
 // Define the main class for the application
 mainClassName = 'aoc.App'

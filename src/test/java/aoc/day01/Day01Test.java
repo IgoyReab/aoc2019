@@ -2,9 +2,7 @@ package aoc.day01;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -13,7 +11,7 @@ public class Day01Test {
 
     @Test
     public void testPart1(){
-        List<String> input = null;
+        List<String> input;
         String result;
 
         input = Arrays.asList("-1","2","8","-3");
@@ -39,7 +37,7 @@ public class Day01Test {
 
     @Test
     public void testPart2(){
-        List<String> input = null;
+        List<String> input;
         String result;
 
 //                +1, -1 first reaches 0 twice.
