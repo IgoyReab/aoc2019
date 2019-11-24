@@ -9,11 +9,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class Day02 implements Day {
+import static aoc.helper.StringHelper.countChars;
 
-    static int countChars(String testString, char testChar) {
-        return CharMatcher.is(testChar).countIn(testString);
-    }
+public class Day02 implements Day {
 
     @Override
     public String part1(List<String> input) {
