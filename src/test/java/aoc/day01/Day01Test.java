@@ -14,25 +14,11 @@ public class Day01Test {
         List<String> input;
         String result;
 
-        input = Arrays.asList("-1","2","8","-3");
+        input = Arrays.asList("12","14","1969","100756");
         result = new Day01().part1(input);
-        assertEquals("6", result);
+        assertEquals("34241", result);
 
-        input = Arrays.asList("+1","-2","+3","+1");
-        result = new Day01().part1(input);
-        assertEquals("3", result);
 
-        input = Arrays.asList("+1","+1","+1");
-        result = new Day01().part1(input);
-        assertEquals("3", result);
-
-        input = Arrays.asList("+1","+1","-2");
-        result = new Day01().part1(input);
-        assertEquals("0", result);
-
-        input = Arrays.asList("-1","-2","-3");
-        result = new Day01().part1(input);
-        assertEquals("-6", result);
     }
 
     @Test
@@ -40,30 +26,24 @@ public class Day01Test {
         List<String> input;
         String result;
 
-//                +1, -1 first reaches 0 twice.
-//                +3, +3, +4, -2, -4 first reaches 10 twice.
-//                -6, +3, +8, +5, -6 first reaches 5 twice.
-//                +7, +7, -2, -7, -4 first reaches 14 twice.
+//        A module of mass 14 requires 2 fuel. This fuel requires no further fuel (2 divided by 3 and rounded down is 0,
+//        which would call for a negative fuel), so the total fuel required is still just 2.
+//        At first, a module of mass 1969 requires 654 fuel. Then, this fuel requires 216 more fuel (654 / 3 - 2). 216
+//        then requires 70 more fuel, which requires 21 fuel, which requires 5 fuel, which requires no further fuel.
+//        So, the total fuel required for a module of mass 1969 is 654 + 216 + 70 + 21 + 5 = 966.
+//        The fuel required by a module of mass 100756 and its fuel is:
+//        33583 + 11192 + 3728 + 1240 + 411 + 135 + 43 + 12 + 2 = 50346.
 
-        input = Arrays.asList("+1","-2","+3","+1");
+        input = Arrays.asList("14");
         result = new Day01().part2(input);
         assertEquals("2", result);
 
-        input = Arrays.asList("+1","-1");
+        input = Arrays.asList("1969");
         result = new Day01().part2(input);
-        assertEquals("0", result);
+        assertEquals("966", result);
 
-        input = Arrays.asList("+3","+3","+4","-2","-4");
+        input = Arrays.asList("100756");
         result = new Day01().part2(input);
-        assertEquals("10", result);
-
-        input = Arrays.asList("-6","+3","+8","+5","-6");
-        result = new Day01().part2(input);
-        assertEquals("5", result);
-
-        input = Arrays.asList("+7","+7","-2","-7","-4");
-        result = new Day01().part2(input);
-        assertEquals("14", result);
-
+        assertEquals("50346", result);
     }
 }
