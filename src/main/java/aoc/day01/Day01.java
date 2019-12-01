@@ -10,13 +10,10 @@ import java.util.concurrent.atomic.LongAdder;
 public class Day01 implements Day {
 
     private int calculatePart1(String s) {
-        long i = Long.parseLong(s);
-        return (((int) (i / 3 )) - 2);
+        return (((int) (Long.parseLong(s) / 3 )) - 2);
     }
 
     private int calculatePart2(String s){
-        long i = Long.parseLong(s);
-
         int fuel = (((int) (Long.parseLong(s) / 3 )) - 2);
         int result = 0;
 
