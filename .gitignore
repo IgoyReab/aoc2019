@@ -7,6 +7,9 @@ build
 # Intellij
 .idea
 out
+
+# java
+/*.hprof
  
 # eclipse
 /.apt_generated
