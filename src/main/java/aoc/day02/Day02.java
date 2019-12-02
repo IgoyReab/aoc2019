@@ -1,74 +1,51 @@
 package aoc.day02;
 
 import aoc.Day;
-import com.google.common.base.CharMatcher;
-import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import static aoc.helper.ListHelper.convertStringToCharList;
-import static aoc.helper.StringHelper.countChars;
 
 public class Day02 implements Day {
 
-    @Override
-    public String part1(List<String> input) {
-
-        String[] programArray = new String[input.size()];
-        programArray = input.toArray(programArray);
-
-        for (int i = 0; i < programArray.length; i=i+4) {
-            int oppCode = Integer.parseInt(programArray[i]);
+    private String[] runProgram(String[] inputProgram){
+        for (int i = 0; i < inputProgram.length; i += 4) {
+            int oppCode = Integer.parseInt(inputProgram[i]);
             if (oppCode == 99) break;
-            int reg1 = Integer.parseInt(programArray[i+1]);
-            int reg2 = Integer.parseInt(programArray[i+2]);
-            int dest = Integer.parseInt(programArray[i+3]);
+            int reg1 = Integer.parseInt(inputProgram[i + 1]);
+            int reg2 = Integer.parseInt(inputProgram[i + 2]);
+            int dest = Integer.parseInt(inputProgram[i + 3]);
 
             if (oppCode == 1) {
-                programArray[dest] = String.valueOf(Integer.parseInt(programArray[reg1]) +
-                        Integer.parseInt(programArray[reg2]));
-            }
-            else {
-                programArray[dest] = String.valueOf(Integer.parseInt(programArray[reg1]) *
-                        Integer.parseInt(programArray[reg2]));
+                inputProgram[dest] = String.valueOf(Integer.parseInt(inputProgram[reg1]) +
+                        Integer.parseInt(inputProgram[reg2]));
+            } else {
+                inputProgram[dest] = String.valueOf(Integer.parseInt(inputProgram[reg1]) *
+                        Integer.parseInt(inputProgram[reg2]));
             }
         }
-        return input.isEmpty() ? "" : programArray[0];
+        return inputProgram;
+    }
+
+    @Override
+    public String part1(List<String> input) {
+        return input.isEmpty() ? "" : runProgram(input.toArray(new String[input.size()]))[0];
     }
 
     @Override
     public String part2(List<String> input) {
-        boolean foundIt = false;
-        char resultChar = ' ';
-        String foundString = "";
+        boolean found = false;
+        int a;
+        int b = 0;
 
-        for (String inputFirstLoop : input) {                                   // loop through the array
-            for (String inputSecondLoop : input) {                              // loop through the array a second time, now I have to elements of the array at the same time
-                LinkedList<Character> foundDifference = new LinkedList<>();    // initialize a list to count different characters
-                if (Objects.equals(inputFirstLoop, inputSecondLoop))
-                    continue;
-
-                // Do not have to check the element against itself
-                for (int i = 0; i < inputFirstLoop.length(); i++) {             // Loop through both the elements to determine which characters are the same
-                    if (inputFirstLoop.charAt(i) != inputSecondLoop.charAt(i)) {// if they are not the same add the character to the list
-                        resultChar = inputFirstLoop.charAt(i);                  // save the Char that is not the same for later use
-                        foundDifference.add(resultChar);
-                    }
-                }
-
-                foundIt = (foundDifference.size() == 1);                        // finaly if there was only one element in the list it is found, set foundIt so I can terminate
-                if (foundIt) break;                                                      // terminate the iteration now and I the higher loop.....
+        for (a = 0; a <= 99; a++) {
+            for (b = 0; b <= 99; b++) {
+                String[] programArray = input.toArray(new String[input.size()]);
+                programArray[1] = String.valueOf(a);
+                programArray[2] = String.valueOf(b);
+                found = (Integer.parseInt(runProgram(programArray)[0]) == 19690720);
+                if (found) break;
             }
-            // save the found value , subtract the different character in a variable
-            foundString = (inputFirstLoop.replace(String.valueOf(resultChar), ""));
-            if (foundIt) break;
+            if (found) break;
         }
-
-        return input.isEmpty() ? "" : foundString;
+        return input.isEmpty() ? "" : (String.valueOf(100 * a + b));
     }
 }
