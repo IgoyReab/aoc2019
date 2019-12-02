@@ -4,6 +4,7 @@ import aoc.Day;
 import com.google.common.base.CharMatcher;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -17,17 +18,27 @@ public class Day02 implements Day {
 
     @Override
     public String part1(List<String> input) {
-        List<String> foundDoubles = input.stream().
-                filter(inputLine -> IntStream.range(0, inputLine.length())
-                        .anyMatch(i -> (countChars(inputLine, inputLine.charAt(i))) == 2))
-                .collect(Collectors.toList());
 
-        List<String> foundTriples = input.stream().
-                filter(inputLine -> IntStream.range(0, inputLine.length())
-                        .anyMatch(i -> (countChars(inputLine, inputLine.charAt(i))) == 3))
-                .collect(Collectors.toList());
+        String[] programArray = new String[input.size()];
+        programArray = input.toArray(programArray);
 
-        return input.isEmpty() ? "" : String.valueOf(foundDoubles.size() * foundTriples.size());
+        for (int i = 0; i < programArray.length; i=i+4) {
+            int oppCode = Integer.parseInt(programArray[i]);
+            if (oppCode == 99) break;
+            int reg1 = Integer.parseInt(programArray[i+1]);
+            int reg2 = Integer.parseInt(programArray[i+2]);
+            int dest = Integer.parseInt(programArray[i+3]);
+
+            if (oppCode == 1) {
+                programArray[dest] = String.valueOf(Integer.parseInt(programArray[reg1]) +
+                        Integer.parseInt(programArray[reg2]));
+            }
+            else {
+                programArray[dest] = String.valueOf(Integer.parseInt(programArray[reg1]) *
+                        Integer.parseInt(programArray[reg2]));
+            }
+        }
+        return input.isEmpty() ? "" : programArray[0];
     }
 
     @Override
