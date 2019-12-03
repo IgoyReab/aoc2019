@@ -30,6 +30,16 @@ class Line {
         Coordinate coordinate = new Coordinate(x,y);
         coordinates.add(coordinate);
     }
+
+    public boolean hasCoordinate(int x, int y){
+        boolean result = false;
+        for (Coordinate c : coordinates) {
+            result = ((c.getX() == x ) && (c.getY() == y));
+            if (result) break;
+        }
+        return result;
+    }
+
 }
 
 public class Day03 implements Day {
@@ -47,21 +57,10 @@ public class Day03 implements Day {
 
             for (int a = 0; a < amount; a++) {
                 switch (direction) {
-                    case 'U':
-                        y++;
-                        break;
-                    case 'R':
-                        x++;
-                        break;
-                    case 'L':
-                        x--;
-                        break;
-                    case 'D':
-                        y--;
-                        break;
-
-                    default:
-                        System.out.println("Unknown direction");
+                    case 'R': x++; break;
+                    case 'L': x--; break;
+                    case 'U': y++; break;
+                    case 'D': y--; break;
                 }
                 line.addCoordinate(x,y);
             }
@@ -72,6 +71,30 @@ public class Day03 implements Day {
 
     @Override
     public String part1(List<String> input) {
+        Line line1;
+        Line line2;
+
+        List<Coordinate> crossings = new ArrayList<>();
+        line1 = processLine(input.get(0));
+        line2 = processLine(input.get(1));
+
+        for(Coordinate coordinateLine1 : line1.getCoordinates()){
+            if (line2.hasCoordinate(coordinateLine1.getX(),coordinateLine1.getY())) {
+                Coordinate foundCoordinate = new Coordinate(coordinateLine1.getX(), coordinateLine1.getY());
+                 crossings.add(foundCoordinate);
+                }
+        }
+
+        int foundDistance = Integer.MAX_VALUE;
+        for (Coordinate coordinate: crossings) {
+            int distance =  ManhattanDistanceHelper.getManhattanDistance(1,1,coordinate.getX(), coordinate.getY());
+            if (distance < foundDistance) foundDistance = distance;
+        }
+        return input.isEmpty() ? "" : String.valueOf(foundDistance);
+    }
+
+    @Override
+    public String part2(List<String> input) {
         Line line1;
         Line line2;
 
@@ -95,10 +118,5 @@ public class Day03 implements Day {
             if (distance < foundDistance) foundDistance = distance;
         }
         return input.isEmpty() ? "" : String.valueOf(foundDistance);
-    }
-
-    @Override
-    public String part2(List<String> input) {
-        return input.isEmpty() ? "" : "";
     }
 }
