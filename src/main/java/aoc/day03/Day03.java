@@ -11,10 +11,12 @@ import java.util.List;
 class Coordinate {
     private int x;
     private int y;
+    private int z;
 
-    public Coordinate(int x, int y) {
+    public Coordinate(int x, int y, int z) {
         this.x = x;
         this.y = y;
+        this.z = z;
     }
 }
 
@@ -26,16 +28,16 @@ class Line {
         coordinates = new ArrayList<>();
     }
 
-    public void addCoordinate(int x, int y) {
-        Coordinate coordinate = new Coordinate(x,y);
+    public void addCoordinate(int x, int y, int z) {
+        Coordinate coordinate = new Coordinate(x,y,z);
         coordinates.add(coordinate);
     }
 
-    public boolean hasCoordinate(int x, int y){
-        boolean result = false;
+    public int hasCoordinate(int x, int y){
+        int result = -1;
         for (Coordinate c : coordinates) {
-            result = ((c.getX() == x ) && (c.getY() == y));
-            if (result) break;
+            if ((c.getX() == x ) && (c.getY() == y)) result = c.getZ();
+            if (result > -1) break;
         }
         return result;
     }
@@ -48,6 +50,8 @@ public class Day03 implements Day {
         Line line = new Line();
         int x = 1;
         int y = 1;
+        int z = 1;
+
 
         String[] xy = input.split(",");
 
@@ -62,7 +66,8 @@ public class Day03 implements Day {
                     case 'U': y++; break;
                     case 'D': y--; break;
                 }
-                line.addCoordinate(x,y);
+                if ( line.hasCoordinate(x,y) == -1) line.addCoordinate(x, y, z);
+                z++;
             }
         }
         return line;
@@ -74,21 +79,17 @@ public class Day03 implements Day {
         Line line1;
         Line line2;
 
-        List<Coordinate> crossings = new ArrayList<>();
         line1 = processLine(input.get(0));
         line2 = processLine(input.get(1));
 
-        for(Coordinate coordinateLine1 : line1.getCoordinates()){
-            if (line2.hasCoordinate(coordinateLine1.getX(),coordinateLine1.getY())) {
-                Coordinate foundCoordinate = new Coordinate(coordinateLine1.getX(), coordinateLine1.getY());
-                 crossings.add(foundCoordinate);
-                }
-        }
-
         int foundDistance = Integer.MAX_VALUE;
-        for (Coordinate coordinate: crossings) {
-            int distance =  ManhattanDistanceHelper.getManhattanDistance(1,1,coordinate.getX(), coordinate.getY());
-            if (distance < foundDistance) foundDistance = distance;
+
+        for(Coordinate coordinateLine1 : line1.getCoordinates()){
+            int line2Distance = line2.hasCoordinate(coordinateLine1.getX(),coordinateLine1.getY());
+            if (line2Distance > -1) {
+                int distance =  ManhattanDistanceHelper.getManhattanDistance(1,1,coordinateLine1.getX(), coordinateLine1.getY());
+                if (distance < foundDistance) foundDistance = distance;
+                }
         }
         return input.isEmpty() ? "" : String.valueOf(foundDistance);
     }
@@ -98,24 +99,17 @@ public class Day03 implements Day {
         Line line1;
         Line line2;
 
-        List<Coordinate> crossings = new ArrayList<>();
         line1 = processLine(input.get(0));
         line2 = processLine(input.get(1));
 
-        for(Coordinate coordinateLine1 : line1.getCoordinates()){
-            for (Coordinate coordinateLine2 : line2.getCoordinates()){
-                if ( (coordinateLine1.getX() == coordinateLine2.getX()) &&
-                        (coordinateLine1.getY() == coordinateLine2.getY())) {
-                    Coordinate foundCoordinate = new Coordinate(coordinateLine1.getX(), coordinateLine2.getY());
-                    crossings.add(foundCoordinate);
-                }
-            }
-        }
-
         int foundDistance = Integer.MAX_VALUE;
-        for(Coordinate coordinate: crossings) {
-            int distance =  ManhattanDistanceHelper.getManhattanDistance(1,1,coordinate.getX(), coordinate.getY());
-            if (distance < foundDistance) foundDistance = distance;
+
+        for(Coordinate coordinateLine1 : line1.getCoordinates()){
+            int line2Distance = line2.hasCoordinate(coordinateLine1.getX(),coordinateLine1.getY());
+            if (line2Distance > -1) {
+                int distance = coordinateLine1.getZ() + line2Distance;
+                if (distance < foundDistance) foundDistance = distance;
+            }
         }
         return input.isEmpty() ? "" : String.valueOf(foundDistance);
     }
