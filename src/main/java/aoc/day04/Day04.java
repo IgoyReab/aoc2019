@@ -25,22 +25,21 @@ private boolean hasSameAdjacentOnlyTwice(String inputString) {
         int maxIndex = inputString.length() - 1;
 
         for (int i=1; i < inputString.length(); i++ ) {
-            int d1 = Integer.parseInt(String.valueOf(inputString.charAt(i)));
-            int d2 = Integer.parseInt(String.valueOf(inputString.charAt(i-1)));
+            int digit1 = Integer.parseInt(String.valueOf(inputString.charAt(i-1)));
+            int digit2 = Integer.parseInt(String.valueOf(inputString.charAt(i)));
 
             if (i == maxIndex) {
-                result = ((d1 == d2) && (d2 != previousDigit));
+                result = ((digit1 == digit2) && (digit1 != previousDigit));
                 break;
             }
 
-            int d3 = Integer.parseInt(String.valueOf(inputString.charAt(i+1)));
-
-            if ((d1 == d2) && (d1 != d3) && (d2 != previousDigit)) {
+            int nextDigit = Integer.parseInt(String.valueOf(inputString.charAt(i+1)));
+            if ((digit1 == digit2) && (digit1 != previousDigit) && (digit2 != nextDigit)) {
                 result = true;
                 break;
             }
 
-            previousDigit = d2;
+            previousDigit = digit1;
         }
 
         return result;
