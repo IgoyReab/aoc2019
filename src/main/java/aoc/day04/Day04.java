@@ -65,7 +65,7 @@ private boolean hasSameAdjacentOnlyTwice(String inputString) {
         List<Integer> possiblePasswords = new ArrayList<>();
 
         for(int x = Integer.parseInt(xy[0]); x <= Integer.parseInt(xy[1]); x++) {
-            if ((isNeverDecreasing(String.valueOf(x))) && (hasSameAdjacent(String.valueOf(x)))) possiblePasswords .add(x);
+            if ((isNeverDecreasing(String.valueOf(x))) && (hasSameAdjacent(String.valueOf(x)))) possiblePasswords.add(x);
         }
         return input.isEmpty() ? "" : String.valueOf(possiblePasswords.size());
     }
@@ -76,7 +76,7 @@ private boolean hasSameAdjacentOnlyTwice(String inputString) {
         List<Integer> possiblePasswords = new ArrayList<>();
 
         for(int x = Integer.parseInt(xy[0]); x <= Integer.parseInt(xy[1]); x++) {
-            if ((isNeverDecreasing(String.valueOf(x))) && (hasSameAdjacentOnlyTwice(String.valueOf(x)))) possiblePasswords .add(x);
+            if ((isNeverDecreasing(String.valueOf(x))) && (hasSameAdjacentOnlyTwice(String.valueOf(x)))) possiblePasswords.add(x);
         }
         return input.isEmpty() ? "" : String.valueOf(possiblePasswords.size());
     }
