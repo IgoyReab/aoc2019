@@ -2,6 +2,8 @@ package aoc.day05;
 
 import aoc.Day;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,14 +12,6 @@ public class Day05 implements Day {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your input to put at " + (putRegister + 1) + " : ");
         return scanner.nextInt();
-    }
-
-    private void printOutput(int outputValue, int fromRegister){
-        if (fromRegister == 0){
-            System.out.println("The immediate value is : " + (outputValue));
-        } else {
-            System.out.println("The value at register " + (fromRegister + 1) + " is : " + (outputValue));
-        }
     }
 
     private String[] runProgramPart1(String[] inputProgram){
@@ -29,6 +23,7 @@ public class Day05 implements Day {
         boolean positionMode1 = true;
         boolean positionMode2 = true;
 
+        List<String> output = new ArrayList<>();
 
         while (oppCode != 99) {
             switch (inputProgram[count].length()) {
@@ -69,11 +64,7 @@ public class Day05 implements Day {
                     parameter3 = Integer.parseInt(inputProgram[count + 3]);
                     if (positionMode1) parameter1 = Integer.parseInt(inputProgram[parameter1]);
                     if (positionMode2) parameter2 = Integer.parseInt(inputProgram[parameter2]);
-                    if (oppCode == 1) {
-                        inputProgram[parameter3] = String.valueOf(parameter1 + parameter2);
-                    } else {
-                        inputProgram[parameter3] = String.valueOf(parameter1 * parameter2);
-                    }
+                    inputProgram[parameter3] = (oppCode == 1) ? String.valueOf(parameter1 + parameter2) : String.valueOf(parameter1 * parameter2);
                     count += 4;
                     break;
                 }
@@ -84,19 +75,16 @@ public class Day05 implements Day {
                     break;
                 }
                 case 4: {
-                    parameter1 = Integer.parseInt(inputProgram[count + 1]);
-                    int register = 0;
-                    if (positionMode1) {
-                        register = parameter1;
-                        parameter1 = Integer.parseInt(inputProgram[parameter1]);
-                    }
-                    printOutput(parameter1, register);
+                    parameter1 = (positionMode1) ?
+                            Integer.parseInt(inputProgram[Integer.parseInt(inputProgram[count + 1])]) :
+                            Integer.parseInt(inputProgram[count + 1]);
+                    output.add(String.valueOf(parameter1));
                     count += 2;
-
+                    break;
                 }
             }
         }
-        return inputProgram;
+        return output.toArray(new String[0]);
     }
 
     private String[] runProgramPart2(String[] inputProgram){
@@ -107,7 +95,8 @@ public class Day05 implements Day {
         int parameter3;
         boolean positionMode1 = true;
         boolean positionMode2 = true;
-//        boolean positionMode3 = true;
+
+        List<String> output = new ArrayList<>();
 
         while (oppCode != 99) {
             switch (inputProgram[count].length()) {
@@ -148,11 +137,8 @@ public class Day05 implements Day {
                     parameter3 = Integer.parseInt(inputProgram[count + 3]);
                     if (positionMode1) parameter1 = Integer.parseInt(inputProgram[parameter1]);
                     if (positionMode2) parameter2 = Integer.parseInt(inputProgram[parameter2]);
-                    if (oppCode == 1) {
-                        inputProgram[parameter3] = String.valueOf(parameter1 + parameter2);
-                    } else {
-                        inputProgram[parameter3] = String.valueOf(parameter1 * parameter2);
-                    }
+
+                    inputProgram[parameter3] = (oppCode == 1) ? String.valueOf(parameter1 + parameter2) : String.valueOf(parameter1 * parameter2);
                     count += 4;
                     break;
                 }
@@ -163,69 +149,54 @@ public class Day05 implements Day {
                     break;
                 }
                 case 4: {
-                    parameter1 = Integer.parseInt(inputProgram[count + 1]);
-                    int register = 0;
-                    if (positionMode1) {
-                        register = parameter1;
-                        parameter1 = Integer.parseInt(inputProgram[parameter1]);
-                    }
-                    printOutput(parameter1, register);
+                    parameter1 = (positionMode1) ?
+                            Integer.parseInt(inputProgram[Integer.parseInt(inputProgram[count + 1])]) :
+                            Integer.parseInt(inputProgram[count + 1]);
+                    output.add(String.valueOf(parameter1));
                     count += 2;
                     break;
                 }
                 case 5:
                 case 6: {
-                    boolean jump;
                     parameter1 = Integer.parseInt(inputProgram[count + 1]);
                     parameter2 = Integer.parseInt(inputProgram[count + 2]);
+
                     if (positionMode1) parameter1 = Integer.parseInt(inputProgram[parameter1]);
                     if (positionMode2) parameter2 = Integer.parseInt(inputProgram[parameter2]);
-                    jump = (((oppCode == 5) && (parameter1 != 0)) || ((oppCode == 6 ) && (parameter1 == 0)));
-                    if (jump) {
-                        count = parameter2;
-                    } else {
-                        count += 3;
-                    }
+
+                    count = (((oppCode == 5) && (parameter1 != 0)) || ((oppCode == 6 ) && (parameter1 == 0))) ? parameter2 : count + 3;
                     break;
                 }
                 case 7:
                 case 8: {
-                    boolean conditionMet;
                     parameter1 =  Integer.parseInt(inputProgram[count + 1]);
                     parameter2 =  Integer.parseInt(inputProgram[count + 2]);
                     parameter3 =  Integer.parseInt(inputProgram[count + 3]);
+
                     if (positionMode1) parameter1 = Integer.parseInt(inputProgram[parameter1]);
                     if (positionMode2) parameter2 = Integer.parseInt(inputProgram[parameter2]);
 
-                    if (oppCode == 7) {
-                        conditionMet = (parameter1 < parameter2);
-                    } else {
-                        conditionMet = (parameter1 == parameter2);
-                    }
+                    boolean conditionMet = (oppCode == 7) ? (parameter1 < parameter2) : (parameter1 == parameter2);
+                    inputProgram[parameter3] = (conditionMet) ? String.valueOf(1) : String.valueOf(0);
 
-                    if (conditionMet) {
-                        inputProgram[parameter3] = String.valueOf(1);
-                    } else {
-                        inputProgram[parameter3] = String.valueOf(0);
-                    }
                     count += 4;
                     break;
                 }
             }
         }
-        return inputProgram;
+        return output.toArray(new String[0]);
     }
 
 
     @Override
     public String part1(List<String> input) {
-        runProgramPart1(input.toArray(new String[0]));
-        return input.isEmpty() ? "" : "";
+        String[] output = runProgramPart1(input.toArray(new String[0]));
+        return input.isEmpty() ? "" : Arrays.toString(output);
     }
 
     @Override
     public String part2(List<String> input) {
-        runProgramPart2(input.toArray(new String[0]));
-        return input.isEmpty() ? "" : "";
+        String[] output = runProgramPart2(input.toArray(new String[0]));
+        return input.isEmpty() ? "" : Arrays.toString(output);
     }
 }
