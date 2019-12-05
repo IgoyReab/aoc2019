@@ -28,35 +28,31 @@ public class Day05 implements Day {
         int parameter3;
         boolean positionMode1 = true;
         boolean positionMode2 = true;
-//        boolean positionMode3 = true;
+
 
         while (oppCode != 99) {
             switch (inputProgram[count].length()) {
                 case 1:
                 case 2:    {
                     oppCode = Integer.parseInt(inputProgram[count]);
-//                    positionMode3 = true;
                     positionMode2 = true;
                     positionMode1 = true;
                     break;
                 }
                 case 3 : {
                     oppCode =  Integer.parseInt(String.valueOf(inputProgram[count].charAt(2)));
-//                    positionMode3 = true;
                     positionMode2 = true;
                     positionMode1 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(0))));
                     break;
                 }
                 case 4: {
                     oppCode =  Integer.parseInt(String.valueOf(inputProgram[count].charAt(3)));
-//                    positionMode3 = true;
                     positionMode2 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(0))));
                     positionMode1 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(1))));
                     break;
                 }
                 case 5: {
                     oppCode =  Integer.parseInt(String.valueOf(inputProgram[count].charAt(4)));
-//                    positionMode3 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(0))));
                     positionMode2 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(1))));
                     positionMode1 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(2))));
                     break;
@@ -67,23 +63,17 @@ public class Day05 implements Day {
 
             switch (oppCode){
                 case 1 :
-                {
-                    parameter1 =  Integer.parseInt(inputProgram[count + 1]);
-                    parameter2 =  Integer.parseInt(inputProgram[count + 2]);
-                    parameter3 =  Integer.parseInt(inputProgram[count + 3]);
-                    if (positionMode1) parameter1 = Integer.parseInt(inputProgram[parameter1]);
-                    if (positionMode2) parameter2 = Integer.parseInt(inputProgram[parameter2]);
-                    inputProgram[parameter3] = String.valueOf(parameter1 + parameter2);
-                    count += 4;
-                    break;
-                }
-                case 2: {
+                case 2 : {
                     parameter1 = Integer.parseInt(inputProgram[count + 1]);
                     parameter2 = Integer.parseInt(inputProgram[count + 2]);
                     parameter3 = Integer.parseInt(inputProgram[count + 3]);
                     if (positionMode1) parameter1 = Integer.parseInt(inputProgram[parameter1]);
                     if (positionMode2) parameter2 = Integer.parseInt(inputProgram[parameter2]);
-                    inputProgram[parameter3] = String.valueOf(parameter1 * parameter2);
+                    if (oppCode == 1) {
+                        inputProgram[parameter3] = String.valueOf(parameter1 + parameter2);
+                    } else {
+                        inputProgram[parameter3] = String.valueOf(parameter1 * parameter2);
+                    }
                     count += 4;
                     break;
                 }
@@ -124,28 +114,24 @@ public class Day05 implements Day {
                 case 1:
                 case 2:    {
                     oppCode = Integer.parseInt(inputProgram[count]);
-//                    positionMode3 = true;
                     positionMode2 = true;
                     positionMode1 = true;
                     break;
                 }
                 case 3 : {
                     oppCode =  Integer.parseInt(String.valueOf(inputProgram[count].charAt(2)));
-//                    positionMode3 = true;
                     positionMode2 = true;
                     positionMode1 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(0))));
                     break;
                 }
                 case 4: {
                     oppCode =  Integer.parseInt(String.valueOf(inputProgram[count].charAt(3)));
-//                    positionMode3 = true;
                     positionMode2 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(0))));
                     positionMode1 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(1))));
                     break;
                 }
                 case 5: {
                     oppCode =  Integer.parseInt(String.valueOf(inputProgram[count].charAt(4)));
-//                    positionMode3 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(0))));
                     positionMode2 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(1))));
                     positionMode1 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(2))));
                     break;
@@ -156,23 +142,17 @@ public class Day05 implements Day {
 
             switch (oppCode){
                 case 1 :
-                {
-                    parameter1 =  Integer.parseInt(inputProgram[count + 1]);
-                    parameter2 =  Integer.parseInt(inputProgram[count + 2]);
-                    parameter3 =  Integer.parseInt(inputProgram[count + 3]);
-                    if (positionMode1) parameter1 = Integer.parseInt(inputProgram[parameter1]);
-                    if (positionMode2) parameter2 = Integer.parseInt(inputProgram[parameter2]);
-                    inputProgram[parameter3] = String.valueOf(parameter1 + parameter2);
-                    count += 4;
-                    break;
-                }
-                case 2: {
+                case 2 : {
                     parameter1 = Integer.parseInt(inputProgram[count + 1]);
                     parameter2 = Integer.parseInt(inputProgram[count + 2]);
                     parameter3 = Integer.parseInt(inputProgram[count + 3]);
                     if (positionMode1) parameter1 = Integer.parseInt(inputProgram[parameter1]);
                     if (positionMode2) parameter2 = Integer.parseInt(inputProgram[parameter2]);
-                    inputProgram[parameter3] = String.valueOf(parameter1 * parameter2);
+                    if (oppCode == 1) {
+                        inputProgram[parameter3] = String.valueOf(parameter1 + parameter2);
+                    } else {
+                        inputProgram[parameter3] = String.valueOf(parameter1 * parameter2);
+                    }
                     count += 4;
                     break;
                 }
@@ -209,30 +189,21 @@ public class Day05 implements Day {
                     break;
                 }
                 case 7:
-                {
+                case 8: {
+                    boolean conditionMet;
                     parameter1 =  Integer.parseInt(inputProgram[count + 1]);
                     parameter2 =  Integer.parseInt(inputProgram[count + 2]);
                     parameter3 =  Integer.parseInt(inputProgram[count + 3]);
                     if (positionMode1) parameter1 = Integer.parseInt(inputProgram[parameter1]);
                     if (positionMode2) parameter2 = Integer.parseInt(inputProgram[parameter2]);
 
-                    if (parameter1 < parameter2) {
-                        inputProgram[parameter3] = String.valueOf(1);
+                    if (oppCode == 7) {
+                        conditionMet = (parameter1 < parameter2);
                     } else {
-                        inputProgram[parameter3] = String.valueOf(0);
+                        conditionMet = (parameter1 == parameter2);
                     }
-                    count += 4;
-                    break;
-                }
-                case 8:
-                {
-                    parameter1 =  Integer.parseInt(inputProgram[count + 1]);
-                    parameter2 =  Integer.parseInt(inputProgram[count + 2]);
-                    parameter3 =  Integer.parseInt(inputProgram[count + 3]);
-                    if (positionMode1) parameter1 = Integer.parseInt(inputProgram[parameter1]);
-                    if (positionMode2) parameter2 = Integer.parseInt(inputProgram[parameter2]);
 
-                    if (parameter1 == parameter2) {
+                    if (conditionMet) {
                         inputProgram[parameter3] = String.valueOf(1);
                     } else {
                         inputProgram[parameter3] = String.valueOf(0);
