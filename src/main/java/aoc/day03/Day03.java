@@ -7,44 +7,44 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-class Coordinate {
-    private int x;
-    private int y;
-    private int distanceFromCentralPort;
 
-    public Coordinate(int x, int y, int z) {
-        this.x = x;
-        this.y = y;
-        this.distanceFromCentralPort = z;
-    }
-}
-
-@Data
-class Wire {
-    private List<Coordinate> coordinates;
-
-    public Wire(){
-        coordinates = new ArrayList<>();
-    }
-
-    public void addCoordinate(int x, int y, int z) {
-        Coordinate coordinate = new Coordinate(x,y,z);
-        coordinates.add(coordinate);
-    }
-
-    public int hasCoordinate(int x, int y){
-        int result = -1;
-        for (Coordinate c : coordinates) {
-            if ((c.getX() == x ) && (c.getY() == y)) result = c.getDistanceFromCentralPort();
-            if (result > -1) break;
-        }
-        return result;
-    }
-
-}
 
 public class Day03 implements Day {
+    @Data
+    class Coordinate {
+        private int x;
+        private int y;
+        private int distanceFromCentralPort;
+
+        public Coordinate(int x, int y, int z) {
+            this.x = x;
+            this.y = y;
+            this.distanceFromCentralPort = z;
+        }
+    }
+
+    @Data
+    class Wire {
+        private List<Coordinate> coordinates;
+
+        public Wire(){
+            coordinates = new ArrayList<>();
+        }
+
+        public void addCoordinate(int x, int y, int z) {
+            Coordinate coordinate = new Coordinate(x,y,z);
+            coordinates.add(coordinate);
+        }
+
+        public int hasCoordinate(int x, int y){
+            int result = -1;
+            for (Coordinate c : coordinates) {
+                if ((c.getX() == x ) && (c.getY() == y)) result = c.getDistanceFromCentralPort();
+                if (result > -1) break;
+            }
+            return result;
+        }
+    }
 
     private Wire processLine(String input){
         Wire wire = new Wire();
