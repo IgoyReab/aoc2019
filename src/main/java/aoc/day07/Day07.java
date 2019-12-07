@@ -21,12 +21,12 @@ public class Day07 implements Day {
         private int parameter3;
         private int result;
         private boolean phase;
-        private String[] inputProgram ;
+        private Integer[] inputProgram ;
         private int phaseSetting;
         private boolean hasOutputted;
         private boolean halted;
 
-        public Amplifier(String[] inputProgram, int number) {
+        public Amplifier(Integer[] inputProgram, int number) {
             this.number = number;
             this.count = 0;
             this.oppCode = 0;
@@ -40,10 +40,10 @@ public class Day07 implements Day {
 
         public Integer runAmplifier(int input) {
             while ((oppCode != 99) && (!hasOutputted)) {
-                oppCode = Integer.parseInt(inputProgram[count]) % 10;
+                oppCode = inputProgram[count] % 10;
                 oppCode = (oppCode == 9) ? 99 : oppCode;
-                boolean positionMode1 = (0 == ( Integer.parseInt(inputProgram[count]) / 100) % 10);
-                boolean positionMode2 = (0 == ( Integer.parseInt(inputProgram[count]) / 1000) % 10);
+                boolean positionMode1 = (0 == ( inputProgram[count] / 100) % 10);
+                boolean positionMode2 = (0 == ( inputProgram[count] / 1000) % 10);
 
                 switch (oppCode) {
                     case 99:
@@ -51,27 +51,27 @@ public class Day07 implements Day {
                         break;
                     case 1:
                     case 2: {
-                        parameter1 = Integer.parseInt(inputProgram[count + 1]);
-                        parameter2 = Integer.parseInt(inputProgram[count + 2]);
-                        parameter3 = Integer.parseInt(inputProgram[count + 3]);
-                        if (positionMode1) parameter1 = Integer.parseInt(inputProgram[parameter1]);
-                        if (positionMode2) parameter2 = Integer.parseInt(inputProgram[parameter2]);
+                        parameter1 = inputProgram[count + 1];
+                        parameter2 = inputProgram[count + 2];
+                        parameter3 = inputProgram[count + 3];
+                        if (positionMode1) parameter1 = inputProgram[parameter1];
+                        if (positionMode2) parameter2 = inputProgram[parameter2];
 
-                        inputProgram[parameter3] = (oppCode == 1) ? String.valueOf(parameter1 + parameter2) : String.valueOf(parameter1 * parameter2);
+                        inputProgram[parameter3] = (oppCode == 1) ? parameter1 + parameter2 : parameter1 * parameter2;
                         count += 4;
                         break;
                     }
                     case 3: {
-                        parameter1 = Integer.parseInt(inputProgram[count + 1]);
-                        inputProgram[parameter1] = (phase) ? String.valueOf(phaseSetting) : String.valueOf(input);
+                        parameter1 = inputProgram[count + 1];
+                        inputProgram[parameter1] = (phase) ? phaseSetting : input;
                         phase = false;
                         count += 2;
                         break;
                     }
                     case 4: {
                         parameter1 = (positionMode1) ?
-                                Integer.parseInt(inputProgram[Integer.parseInt(inputProgram[count + 1])]) :
-                                Integer.parseInt(inputProgram[count + 1]);
+                                inputProgram[inputProgram[count + 1]] :
+                                inputProgram[count + 1];
 
                         result = parameter1;
                         hasOutputted = true;
@@ -80,26 +80,26 @@ public class Day07 implements Day {
                     }
                     case 5:
                     case 6: {
-                        parameter1 = Integer.parseInt(inputProgram[count + 1]);
-                        parameter2 = Integer.parseInt(inputProgram[count + 2]);
+                        parameter1 = inputProgram[count + 1];
+                        parameter2 = inputProgram[count + 2];
 
-                        if (positionMode1) parameter1 = Integer.parseInt(inputProgram[parameter1]);
-                        if (positionMode2) parameter2 = Integer.parseInt(inputProgram[parameter2]);
+                        if (positionMode1) parameter1 = inputProgram[parameter1];
+                        if (positionMode2) parameter2 = inputProgram[parameter2];
 
                         count = (((oppCode == 5) && (parameter1 != 0)) || ((oppCode == 6) && (parameter1 == 0))) ? parameter2 : count + 3;
                         break;
                     }
                     case 7:
                     case 8: {
-                        parameter1 = Integer.parseInt(inputProgram[count + 1]);
-                        parameter2 = Integer.parseInt(inputProgram[count + 2]);
-                        parameter3 = Integer.parseInt(inputProgram[count + 3]);
+                        parameter1 = inputProgram[count + 1];
+                        parameter2 = inputProgram[count + 2];
+                        parameter3 = inputProgram[count + 3];
 
-                        if (positionMode1) parameter1 = Integer.parseInt(inputProgram[parameter1]);
-                        if (positionMode2) parameter2 = Integer.parseInt(inputProgram[parameter2]);
+                        if (positionMode1) parameter1 = inputProgram[parameter1];
+                        if (positionMode2) parameter2 = inputProgram[parameter2];
 
                         boolean conditionMet = (oppCode == 7) ? (parameter1 < parameter2) : (parameter1 == parameter2);
-                        inputProgram[parameter3] = (conditionMet) ? String.valueOf(1) : String.valueOf(0);
+                        inputProgram[parameter3] = (conditionMet) ? 1 : 0;
 
                         count += 4;
                         break;
@@ -140,10 +140,12 @@ public class Day07 implements Day {
     public String part1(List<String> input) {
         int maxValue = 0;
 
+        List<Integer> integerProgram = input.stream().map(Integer::parseInt).collect(Collectors.toList());
+
         for (String inputSequence : generateInputSequences01234()) {
             List<Amplifier> amplifiers = new ArrayList<>();
             for (int x=0; x < 5; x++) {
-                Amplifier amplifier = new Amplifier(input.toArray(new String[0]), x);
+                Amplifier amplifier = new Amplifier(integerProgram.toArray(new Integer[0]), x);
                 amplifiers.add(amplifier);
             }
 
@@ -161,10 +163,12 @@ public class Day07 implements Day {
     public String part2(List<String> input) {
         int maxValue = 0;
 
+        List<Integer> integerProgram = input.stream().map(Integer::parseInt).collect(Collectors.toList());
+
         for (String inputSequence : generateInputSequences56789()) {
             List<Amplifier> amplifiers = new ArrayList<>();
             for (int x=0; x < 5; x++) {
-                Amplifier amplifier = new Amplifier(input.toArray(new String[0]), x);
+                Amplifier amplifier = new Amplifier(integerProgram.toArray(new Integer[0]), x);
                 amplifiers.add(amplifier);
             }
 
