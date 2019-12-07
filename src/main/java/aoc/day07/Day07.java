@@ -20,8 +20,6 @@ public class Day07 implements Day {
         private int parameter2;
         private int parameter3;
         private int result;
-        private boolean positionMode1;
-        private boolean positionMode2;
         private boolean phase;
         private String[] inputProgram ;
         private int phaseSetting;
@@ -33,8 +31,6 @@ public class Day07 implements Day {
             this.count = 0;
             this.oppCode = 0;
             this.result = 0;
-            this.positionMode1 = true;
-            this.positionMode2 = true;
             this.inputProgram = inputProgram;
             this.phase = true;
             this.hasOutputted = false;
@@ -44,35 +40,10 @@ public class Day07 implements Day {
 
         public Integer runAmplifier(int input) {
             while ((oppCode != 99) && (!hasOutputted)) {
-                switch (inputProgram[count].length()) {
-                    case 1:
-                    case 2: {
-                        oppCode = Integer.parseInt(inputProgram[count]);
-                        positionMode2 = true;
-                        positionMode1 = true;
-                        break;
-                    }
-                    case 3: {
-                        oppCode = Integer.parseInt(String.valueOf(inputProgram[count].charAt(2)));
-                        positionMode2 = true;
-                        positionMode1 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(0))));
-                        break;
-                    }
-                    case 4: {
-                        oppCode = Integer.parseInt(String.valueOf(inputProgram[count].charAt(3)));
-                        positionMode2 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(0))));
-                        positionMode1 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(1))));
-                        break;
-                    }
-                    case 5: {
-                        oppCode = Integer.parseInt(String.valueOf(inputProgram[count].charAt(4)));
-                        positionMode2 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(1))));
-                        positionMode1 = (0 == Integer.parseInt(String.valueOf(inputProgram[count].charAt(2))));
-                        break;
-                    }
-                }
-
-                if (oppCode == 9) oppCode = 99;
+                oppCode = Integer.parseInt(inputProgram[count]) % 10;
+                oppCode = (oppCode == 9) ? 99 : oppCode;
+                boolean positionMode1 = (0 == ( Integer.parseInt(inputProgram[count]) / 100) % 10);
+                boolean positionMode2 = (0 == ( Integer.parseInt(inputProgram[count]) / 1000) % 10);
 
                 switch (oppCode) {
                     case 99:
