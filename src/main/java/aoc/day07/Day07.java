@@ -144,6 +144,7 @@ public class Day07 implements Day {
 
         for (String inputSequence : generateInputSequences01234()) {
             List<Amplifier> amplifiers = new ArrayList<>();
+
             for (int x=0; x < 5; x++) {
                 Amplifier amplifier = new Amplifier(integerProgram.toArray(new Integer[0]), x);
                 amplifiers.add(amplifier);
@@ -177,12 +178,12 @@ public class Day07 implements Day {
             while (!stop) {
                 stop = true;
                 for (int y=0; y<5; y++)
-                if (!(amplifiers.get(y).isHalted())) {
-                    amplifiers.get(y).setPhaseSetting(Integer.parseInt(String.valueOf(inputSequence.charAt(y))));
-                    output = amplifiers.get(y).runAmplifier(output);
-                    amplifiers.get(y).setHasOutputted(false);
-                    stop = false;
-                }
+                    if (!(amplifiers.get(y).isHalted())) {
+                        amplifiers.get(y).setPhaseSetting(Integer.parseInt(String.valueOf(inputSequence.charAt(y))));
+                        output = amplifiers.get(y).runAmplifier(output);
+                        amplifiers.get(y).setHasOutputted(false);
+                        stop = false;
+                    }
             }
             if (output > maxValue) maxValue = output;
         }

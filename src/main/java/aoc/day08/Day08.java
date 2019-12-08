@@ -1,6 +1,7 @@
 package aoc.day08;
 
 import aoc.Day;
+import aoc.helper.LoopHelper;
 import aoc.helper.StringHelper;
 import lombok.Data;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static aoc.helper.LoopHelper.loop;
+import static aoc.helper.LoopHelper.nestedLoop;
 import static java.lang.Integer.MAX_VALUE;
 
 public class Day08 implements Day {
@@ -29,7 +30,7 @@ public class Day08 implements Day {
         public Image(List<String> input) {
             layers = new ArrayList<>();
             this.finalImage = new Integer[tall][width];
-            loop(finalImage, (y , x) -> finalImage[y][x] = 2);
+            LoopHelper.nestedLoop(finalImage, (y , x) -> finalImage[y][x] = 2);
 
             List<Integer> inputIntegers = StringHelper.convertStringToIntegerList(input.get(0));
             inputIntegers.forEach(this::mapIntegers);
@@ -80,7 +81,7 @@ public class Day08 implements Day {
 
         private  void printImage() {
             System.out.println("Image : \n");
-            loop(finalImage, (y, x) -> {
+            LoopHelper.nestedLoop(finalImage, (y, x) -> {
                 if (x==0) System.out.println();
                 System.out.print((finalImage[y][x] == 0) ? " " : "□" );
             });
