@@ -37,24 +37,24 @@ public class Day08 implements Day {
             printImage();
         }
 
-        private void mapIntegers(int i){
+        private void mapIntegers(int pixel){
             if (newLayer) {
                 addLayer(new Layer());
                 newLayer = false;
             }
 
-            getLayers().get(layerCount).rows[countTall][countWidth] = i;
+            getLayers().get(layerCount).rows[countTall][countWidth] = pixel;
             if (finalImage[countTall][countWidth] == 2) {
-                finalImage[countTall][countWidth] = i;
+                finalImage[countTall][countWidth] = pixel;
             }
 
-            int numberOfZeroes = (i == 0) ?
+            int numberOfZeroes = (pixel == 0) ?
                     getLayers().get(layerCount).getNumberOfZeroes() + 1 :
                     getLayers().get(layerCount).getNumberOfZeroes();
-            int numberOfOnes = (i == 1) ?
+            int numberOfOnes = (pixel == 1) ?
                     getLayers().get(layerCount).getNumberOfOnes() + 1 :
                     getLayers().get(layerCount).getNumberOfOnes();
-            int numberOfTwos = (i == 2) ?
+            int numberOfTwos = (pixel == 2) ?
                     getLayers().get(layerCount).getNumberOfTwos() + 1 :
                     getLayers().get(layerCount).getNumberOfTwos();
 
