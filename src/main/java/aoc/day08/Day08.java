@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static aoc.helper.LoopHelper.loop;
 import static java.lang.Integer.MAX_VALUE;
 
 public class Day08 implements Day {
@@ -15,55 +16,24 @@ public class Day08 implements Day {
     public Integer width = 25;
     public Integer tall = 6;
 
-
-
     @Data
     class Image {
         private List<Layer> layers;
-
         private Integer[][] finalImage;
 
         public Image() {
             layers = new ArrayList<>();
             this.finalImage = new Integer[tall][width];
-            for (int x=0;x<tall;x++) {
-                for (int y=0; y < width; y++) {
-                    finalImage[x][y] = 2;
-                }
-            }
+            loop(finalImage, (y , x) -> finalImage[y][x] = 2);
         }
 
         public void printImage() {
-            for (int y=0; y < width+6; y++) {
-                System.out.print("=");
-            }
-            System.out.println();
-            System.out.print("=  ");
-
-            for (int y=0; y < width; y++) {
-                System.out.print(" ");
-
-            }
-            System.out.println("  =");
-            System.out.print("=  ");
-
-
-            for (int x=0;x<tall;x++) {
-                for (int y=0; y < width; y++) {
-                    System.out.print((finalImage[x][y] == 0) ? " " : "□" );
-                }
-                System.out.println("  =");
-                System.out.print("=  ");
-            }
-
-            for (int y=0; y < width ; y++) {
-                System.out.print(" ");
-            }
-            System.out.println("  =");
-            for (int y=0; y < width + 6; y++) {
-                System.out.print("=");
-            }
-            System.out.println();
+            System.out.println("Image : \n");
+            loop(finalImage, (y, x) -> {
+                if (x==0) System.out.println();
+                System.out.print((finalImage[y][x] == 0) ? " " : "□" );
+            });
+            System.out.println("\n\n");
         }
 
         public void makeImage(List<String> input){

@@ -32,8 +32,20 @@ public class StringHelper {
                 return str.length();
             }
         };
+    }
 
+    public static List<Character>  convertStringToCharList(String str) {
+        return new AbstractList<Character>() {
+            @Override
+            public Character get(int index) {
+                return str.charAt(index);
+            }
 
+            @Override
+            public int size() {
+                return str.length();
+            }
+        };
     }
 
 
