@@ -1,10 +1,10 @@
-package aoc.day99;
+package aoc.day23;
 
 import aoc.Day;
 
 import java.util.List;
 
-public class Day99 implements Day {
+public class Day23 implements Day {
 
 
     @Override

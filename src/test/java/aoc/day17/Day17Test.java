@@ -1,6 +1,6 @@
-package aoc.day99;
+package aoc.day17;
 
-import aoc.day03.Day03;
+import aoc.day25.Day25;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class Day99Test {
+public class Day17Test {
 
     @Test
     public void testPart1(){
@@ -17,7 +17,7 @@ public class Day99Test {
 
         input = Arrays.asList("1","2");
 
-        result = new Day99().part1(input);
+        result = new Day17().part1(input);
         assertEquals("", result);
     }
 
@@ -28,7 +28,7 @@ public class Day99Test {
 
         input = Arrays.asList("1","2");
 
-        result = new Day99().part2(input);
+        result = new Day17().part2(input);
         assertEquals("", result);
 
     }

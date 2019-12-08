@@ -11,6 +11,23 @@ import aoc.day05.Day05;
 import aoc.day06.Day06;
 import aoc.day07.Day07;
 import aoc.day08.Day08;
+import aoc.day09.Day09;
+import aoc.day10.Day10;
+import aoc.day11.Day11;
+import aoc.day12.Day12;
+import aoc.day13.Day13;
+import aoc.day14.Day14;
+import aoc.day15.Day15;
+import aoc.day16.Day16;
+import aoc.day17.Day17;
+import aoc.day18.Day18;
+import aoc.day19.Day19;
+import aoc.day20.Day20;
+import aoc.day21.Day21;
+import aoc.day22.Day22;
+import aoc.day23.Day23;
+import aoc.day24.Day24;
+import aoc.day25.Day25;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,6 +56,23 @@ public class App {
         DAYS.put(6, new Day06());
         DAYS.put(7, new Day07());
         DAYS.put(8, new Day08());
+        DAYS.put(9, new Day09());
+        DAYS.put(10, new Day10());
+        DAYS.put(11, new Day11());
+        DAYS.put(12, new Day12());
+        DAYS.put(13, new Day13());
+        DAYS.put(14, new Day14());
+        DAYS.put(15, new Day15());
+        DAYS.put(16, new Day16());
+        DAYS.put(17, new Day17());
+        DAYS.put(18, new Day18());
+        DAYS.put(19, new Day19());
+        DAYS.put(20, new Day20());
+        DAYS.put(21, new Day21());
+        DAYS.put(22, new Day22());
+        DAYS.put(23, new Day23());
+        DAYS.put(24, new Day24());
+        DAYS.put(25, new Day25());
     }
 
     private static List<String> loadInput(int day){

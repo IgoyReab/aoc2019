@@ -5,6 +5,7 @@ import org.junit.Test;
 import static aoc.helper.StringHelper.countChars;
 import static org.junit.Assert.assertEquals;
 
+
 public class StringHelperTest {
 
     @Test
@@ -27,4 +28,6 @@ public class StringHelperTest {
         result = countChars(inputString, 'e');
         assertEquals(5, result);
     }
+
+
 }
