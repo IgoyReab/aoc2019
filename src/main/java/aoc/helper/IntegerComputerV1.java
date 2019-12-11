@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class IntegerComputer {
+public class IntegerComputerV1 {
     private int number;
     private int count;
     private int oppCode;
@@ -26,8 +26,11 @@ public class IntegerComputer {
     private boolean relativeMode1;
     private boolean relativeMode2;
     private boolean relativeMode3;
+    private boolean halted;
+    private boolean hasOutput;
+    private boolean haltOnOutput;
 
-    public IntegerComputer(List<Long> inputProgram) {
+    public IntegerComputerV1(List<Long> inputProgram) {
         this.count = 0;
         this.oppCode = 0;
         this.result = new ArrayList<>();
@@ -42,6 +45,9 @@ public class IntegerComputer {
         this.relativeMode1 = false;
         this.relativeMode2 = false;
         this.relativeMode3 = false;
+        this.hasOutput = false;
+        this.halted = false;
+        this.haltOnOutput = false;
         for (int x = inputProgram.size(); x < 100000; x++) inputProgram.add((long) 0);
     }
 
@@ -122,7 +128,8 @@ public class IntegerComputer {
     }
 
     public List<Long> runIntegerComputer() {
-        while ( oppCode != 99 ) {
+        hasOutput = false;
+        while ( ( oppCode != 99 ) && (!(halted)) ) {
             oppCode = getOppCode();
             setModes();
             switch (oppCode) {
@@ -151,6 +158,7 @@ public class IntegerComputer {
                 case 4: {
                     parameter1 = checkMode(getParameter(count + 1), positionMode1, relativeMode1);
                     result.add(parameter1);
+                    hasOutput = true;
                     count += 2;
                     break;
                 }
@@ -197,8 +205,13 @@ public class IntegerComputer {
                     relativeBias += parameter1;
                     count+=2;
                 }
-                case 99:
+                case 99: {
                     break;
+                }
+                default: {
+                    halted = true;
+                    break;
+                }
             }
         }
         return result;

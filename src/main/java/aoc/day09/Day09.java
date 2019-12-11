@@ -1,7 +1,7 @@
 package aoc.day09;
 
 import aoc.Day;
-import aoc.helper.IntegerComputer;
+import aoc.helper.IntegerComputerV1;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +12,7 @@ public class Day09 implements Day {
         List<Long> longInput = input.stream().
                 map(Long::parseLong).collect(Collectors.toList());
 
-        IntegerComputer ic = new IntegerComputer(longInput);
+        IntegerComputerV1 ic = new IntegerComputerV1(longInput);
         ic.setInputParameter(1);
         List<Long> result = ic.runIntegerComputer();
 
@@ -26,7 +26,7 @@ public class Day09 implements Day {
             map(Long::parseLong).collect(Collectors.toList());
 
 
-        IntegerComputer ic = new IntegerComputer(longInput);
+        IntegerComputerV1 ic = new IntegerComputerV1(longInput);
         ic.setInputParameter(2);
         List<Long> result = ic.runIntegerComputer();
 
