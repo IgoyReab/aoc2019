@@ -102,7 +102,7 @@ public class Day09Test {
                 "0","968","21201","-2","0","-2","109","-3","2105","1","0");
 
         Day09 day09 = new Day09();
-        day09.initialInput = 1;
+
         result = day09.part1(input);
         assertEquals("[3765554916]", result);
     }
@@ -167,7 +167,6 @@ public class Day09Test {
                     "0","968","21201","-2","0","-2","109","-3","2105","1","0");
 
             Day09 day09 = new Day09();
-            day09.initialInput = 2;
             result = day09.part2(input);
             assertEquals("[76642]", result);
 
