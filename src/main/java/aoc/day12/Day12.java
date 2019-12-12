@@ -137,12 +137,12 @@ public class Day12 implements Day {
 
     @Data
     private class Moon{
-        private String name;
+        private int number;
         private Position position;
         private Velocity velocity;
 
-        public Moon(String name, int x, int y, int z) {
-            this.name = name;
+        public Moon(int number, int x, int y, int z) {
+            this.number = number;
             position = new Position(x,y,z);
             velocity = new Velocity();
         }
@@ -234,33 +234,15 @@ public class Day12 implements Day {
                     if (s3[0].equals("y")) y = Integer.parseInt(s3[1]);
                     if (s3[0].equals("z")) z = Integer.parseInt(s3[1]);
                 }
-                switch (count) {
-                    case 1: {
-                        name = "Io";
-                        break;
-                    }
-                    case 2: {
-                        name = "Europa";
-                        break;
-                    }
-                    case 3: {
-                        name = "Ganymede";
-                        break;
-                    }
-                    case 4: {
-                        name = "Callisto";
-                        break;
-                    }
-                }
-
-                addMoon(name, x, y, z);
+                addMoon(count, x, y, z);
             }
-            addPair("Europa", "Ganymede");
-            addPair("Europa", "Callisto");
-            addPair("Europa", "Io");
-            addPair("Ganymede", "Callisto");
-            addPair("Ganymede", "Io");
-            addPair("Callisto", "Io");
+
+            addPair(1, 2);
+            addPair(1, 3);
+            addPair(1, 4);
+            addPair(2, 3);
+            addPair(2, 4);
+            addPair(3, 4);
         }
 
         public void applyGravityAndVelocity() {
@@ -272,18 +254,18 @@ public class Day12 implements Day {
             }
         }
 
-        public Moon getMoon(String n) {
+        public Moon getMoon(int n) {
             for (Moon m : moons) {
-                if (m.getName().equals(n)) return m;
+                if (m.getNumber() ==n) return m;
             }
             return null;
         }
 
-        private void addMoon(String name, int x, int y, int z) {
-            moons.add(new Moon(name, x, y, z));
+        private void addMoon(int n, int x, int y, int z) {
+            moons.add(new Moon(n, x, y, z));
         }
 
-        public void addPair(String o, String p) {
+        public void addPair(int o, int p) {
             moonPairs.add(new MoonPair(getMoon(o), getMoon(p)));
         }
 
@@ -293,7 +275,7 @@ public class Day12 implements Day {
                 System.out.print("pos =<" + m.getPosition().getX() + "," + m.getPosition().getY() + "," +
                         m.getPosition().getZ() + ">, vel=");
                 System.out.print(m.getVelocity().getA() + "," + m.getVelocity().getB() + "," +
-                        m.getVelocity().getC() + "> " + "Moon=" + m.getName());
+                        m.getVelocity().getC() + "> " + "Moon=" + m.getNumber());
                 System.out.println(" pot : " + m.getPotentialEnergy() + ";  kin : " + m.getKineticEnergy() +
                         "; " + " total : " + m.getEnergy());
             }
