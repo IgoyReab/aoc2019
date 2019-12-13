@@ -1,94 +1,20 @@
 package aoc.day13;
 
 import aoc.Day;
-import aoc.intcodeComputer.IntcodeComputer;
+import aoc.helper.IntegerComputerV5;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Day13 implements Day {
 
-    private Integer getParameter(List<Integer> input, int a, int b) {
-        for (int x=0; x<input.size(); x+=3) {
-            if ((input.get(x) != -1) && (input.get(x) == a)  && (input.get(x+1) == b)) {
-                return input.get(x+2);
-            }
-        }
-        return null;
-    }
-
-
-    public void printGame(List<Integer> result) {
-        int xCount = 0;
-        int yCount = 0;
-
-        System.out.println(result);
-
-        for (int x=0; x<result.size(); x+=3) {
-            if (xCount < result.get(x)) xCount = result.get(x);
-        }
-        for (int y=1; y<result.size(); y+=3) {
-            if (yCount < result.get(y)) yCount = result.get(y);
-        }
-
-        System.out.println("x = " + xCount + " y = " + yCount);
-
-
-        Integer[][] grid = new Integer[xCount+1][yCount+1];
-
-        for (int b = 0; b<=yCount; b++) {
-            for (int a = 0; a<=xCount; a++) {
-                grid[a][b] = 0;
-            }
-        }
-
-        for (int a = 0; a<=xCount; a++) {
-            for (int b = 0; b<=yCount; b++) {
-                grid[a][b] = getParameter(result, a, b);
-            }
-        }
-
-        for (int b = 0; b<=yCount; b++) {
-            for (int a = 0; a<=xCount; a++) {
-                if (a == 0) System.out.println();
-                if (grid[a][b] == null) System.out.println(" null at " + a + " " + b);
-                switch (grid[a][b]) {
-                    case 0: {
-                        System.out.print(" ");
-                        break;
-                    }
-                    case 1: {
-                        System.out.print("W");
-                        break;
-                    }
-                    case 2: {
-                        System.out.print("B");
-                        break;
-                    }
-                    case 3: {
-                        System.out.print("P");
-                        break;
-                    }
-                    case 4: {
-                        System.out.print("o");
-                        break;
-                    }
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + grid[a][b]);
-                }
-            }
-        }
-    }
-
     @Override
-
-
     public String part1(List<String> input) {
         List<Long> longInput =  Arrays.stream(input.get(0).split(","))
                 .map(Long::valueOf)
                 .collect(Collectors.toList());
 
-        IntcodeComputer computer = new IntcodeComputer(longInput);
+        IntegerComputerV5 computer = new IntegerComputerV5(longInput);
         computer.runProgram();
 
         Map<Position, Tile> board = new HashMap<>();
@@ -99,24 +25,6 @@ public class Day13 implements Day {
 
         return input.isEmpty() ? "" : String.valueOf(numBlocks);
     }
-//    public String part1(List<String> input) {
-//        List<Long> longInput = input.stream().
-//                map(Long::parseLong).collect(Collectors.toList());
-//
-//        IntegerComputerV3 arcade = new IntegerComputerV3(longInput);
-//        List<Integer> result = arcade.runIntegerComputer();
-//        printGame(result);
-//
-//        long count = 0;
-//        for (int x=2; x<result.size(); x+=3) {
-//            if (result.get(x) == 2) count++;
-//        }
-//
-//
-//        return input.isEmpty() ? "" : String.valueOf(count);
-//    }
-
-
 
     @Override
     public String part2(List<String> input) {
@@ -125,7 +33,7 @@ public class Day13 implements Day {
                 .collect(Collectors.toList());
 
         longInput.set(0,(long)2);
-        IntcodeComputer computer = new IntcodeComputer(longInput);
+        IntegerComputerV5 computer = new IntegerComputerV5(longInput);
         ScoreBoard scoreBoard = new ScoreBoard();
         Map<Position, Tile> board = new HashMap<>();
         boolean notDone = true;
@@ -206,8 +114,7 @@ public class Day13 implements Day {
         }
 
         public static Tile getFromId(long idToGet){
-            final Tile tile = Arrays.stream(Tile.values()).filter(x -> x.id == idToGet).findFirst().get();
-            return tile;
+            return Arrays.stream(Tile.values()).filter(x -> x.id == idToGet).findFirst().get();
         }
 
     }

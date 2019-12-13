@@ -1,169 +1,154 @@
 package aoc.helper;
 
-import lombok.Data;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Data
 public class IntegerComputerV2 {
-    private int count;
-    private int oppCode;
-    private long firstParameter;
-    private long secondParameter;
-    private List<Long> result;
-    private int relativeBase;
-    private List<Long> inputProgram ;
-    private long inputParameter;
-    private boolean halted;
-    private boolean hasOutput;
-    private boolean haltOnOutput;
 
-    public IntegerComputerV2(List<Long> inputProgram) {
-        this.count = 0;
-        this.oppCode = 0;
-        this.result = new ArrayList<>();
-        this.relativeBase = 0;
-        this.inputProgram = inputProgram;
-        this.hasOutput = false;
-        this.halted = false;
-        for (int x = inputProgram.size(); x < 100000; x++) inputProgram.add((long) 0);
+
+    private List<Long> programMem;
+    private Map<Long, Long> extraTerrestrialMemory;
+    private int programCount;
+
+    long relativeBase = 0;
+
+    private Queue<Long> inputs = new LinkedList<>();
+    private Queue<Long> outputs = new LinkedList<>();
+
+
+    public IntegerComputerV2(List<Long> input) {
+        programMem =  input;
+
+        extraTerrestrialMemory = new HashMap<>();
+
     }
 
-    private int getOppCode(int x) {
-        return (int) ((((inputProgram.get(x) / 10) % 10) * 10) + (inputProgram.get(x) % 10));
+    public void addInput(Long input) {
+        inputs.add(input);
     }
 
-    private long getParameter(int parameterNumber) {
-        return inputProgram.get(getPosition((parameterNumber)));
+    public Queue<Long> getOutputs() {
+        return outputs;
     }
 
-    private int getPosition(int parameterNumber) {
-        long instruction ;
-        long result;
-        try {
-            instruction = inputProgram.get(count);
-        } catch ( IndexOutOfBoundsException e ) {
-            return 0;
+
+    public String runProgram() {
+        while (true) {
+            long instruction = programMem.get(programCount++);
+
+            long operationCode = instruction % 100;
+            long modes = instruction / 100;
+            long[] parameterModes = new long[3];
+            int modesCount = 0;
+            while (modes > 0) {
+                parameterModes[modesCount++] = modes % 10;
+                modes = modes / 10;
+            }
+
+            if(operationCode == 99) {
+                return "EXITED";
+            }
+            else if (isThreeParameterOpCode(operationCode)) {
+                long firstParameter = getParameterValue(parameterModes[0], programCount++);
+                long secondParameter = getParameterValue(parameterModes[1], programCount++);
+                long finalPosition = parameterModes[2] == 2 ? relativeBase + getParameterValueFromMemory((long) programCount++) : getParameterValueFromMemory((long)programCount ++);
+
+                long valueToSetToFinalPosition;
+                if (operationCode == 1) {
+                    valueToSetToFinalPosition = firstParameter + secondParameter;
+                }
+                else if (operationCode == 2) {
+                    valueToSetToFinalPosition =  firstParameter * secondParameter;
+                }
+                else if(operationCode == 7) {
+                    valueToSetToFinalPosition = firstParameter < secondParameter ? 1 : 0;
+                }
+                else if (operationCode == 8) {
+                    valueToSetToFinalPosition = firstParameter == secondParameter ? 1 : 0;
+                }
+                else {
+                    throw new RuntimeException("unexpected 3 param opCode...");
+                }
+
+                setParameterValueToMemory(finalPosition, valueToSetToFinalPosition);
+            }
+            else if (operationCode == 3 || operationCode == 4) {
+                if (operationCode == 3) {
+                    if (inputs.size() == 0) {
+                        programCount -= 1; //try this again if this gets ran again!
+                        return "NEED_INPUT";
+                    }
+                    else {
+                        long parameter1 = programMem.get(programCount++);
+                        if (parameterModes[0] == 2) {
+                            parameter1 = relativeBase + parameter1;
+                        }
+                        setParameterValueToMemory(parameter1, inputs.remove());
+                    }
+                }
+                else if (operationCode == 4) {
+                    long output = getParameterValue(parameterModes[0], programCount++);
+                    outputs.add(output);
+                }
+            }
+            else if (operationCode == 5 || operationCode == 6) {
+                long parameter1 = getParameterValue(parameterModes[0], programCount++);
+                long parameter2 = getParameterValue(parameterModes[1], programCount++);
+
+                if (operationCode == 5) {
+                    if (parameter1 != 0) {
+                        programCount = (int)parameter2;
+                    }
+                }
+                else if (operationCode == 6){
+                    if (parameter1 == 0) {
+                        programCount = (int)parameter2;
+                    }
+                }
+            }
+            else if (operationCode == 9) {
+                relativeBase += getParameterValue(parameterModes[0], programCount++);
+            }
+            else {
+                throw new RuntimeException("unexpected Opcode " + operationCode);
+            }
         }
-        int mode = (int) ((instruction / (10 * (int) Math.pow(10, parameterNumber))) % 10);
-        switch (mode) {
-            case 0 : {
-                result =  inputProgram.get((count + parameterNumber));
-                break;
-            }
-            case 1 : {
-                result  = count + parameterNumber;
-                break;
-            }
-            case 2 : {
-                result = inputProgram.get(count + parameterNumber) + relativeBase;
-                break;
-            }
-            default : {
-                throw new IllegalStateException("unknown mode " + mode);
-            }
-        }
-        return (int) result;
     }
 
-    private void setParameter(int index, long value){
-        inputProgram.set(index, value);
+    private boolean isThreeParameterOpCode(long opCode) {
+        return opCode == 1 || opCode == 2 || opCode == 7 || opCode == 8;
     }
 
-    public List<Long> runIntegerComputer() {
-        hasOutput = false;
-
-        while ((!halted) && (!hasOutput))  {
-            oppCode = getOppCode(count);
-            switch (oppCode) {
-                case 1: {
-                    firstParameter = getParameter(1);
-                    secondParameter = getParameter(2);
-                    int writePosition = getPosition(3);
-                    setParameter(writePosition, firstParameter + secondParameter);
-                    count += 4;
-                    break;
-                }
-                case 2: {
-                    firstParameter = getParameter(1);
-                    secondParameter = getParameter(2);
-                    int writePosition = getPosition(3);
-                    setParameter(writePosition, firstParameter * secondParameter);
-                    count += 4;
-                    break;
-                }
-                case 3: {
-                    int writePosition = getPosition(1);
-                    setParameter(writePosition, inputParameter);
-                    System.out.println("Input " + inputParameter + " has been provided");
-                    count += 2;
-                    break;
-                }
-                case 4: {
-                    firstParameter = getParameter(1);
-                    result.add(firstParameter);
-                    System.out.println("Result : " + result);
-                    hasOutput = true;
-                    count += 2;
-                    break;
-                }
-                case 5: {
-                    firstParameter = getParameter(1);
-                    secondParameter = getParameter(2);
-                    if (firstParameter != 0) {
-                        count = (int) secondParameter;
-                    } else {
-                        count += 3;
-                    }
-                    break;
-                }
-                case 6: {
-                    firstParameter = getParameter(1);
-                    secondParameter = getParameter(2);
-                    count += 3;
-                    if (firstParameter == 0) {
-                        count = (int) secondParameter;
-                    } else {
-                       count += 3;
-                    }
-                    break;
-                }
-                case 7: {
-                    firstParameter = getParameter(1);
-                    secondParameter = getParameter(2);
-                    int writePosition = getPosition(3);
-                    if (firstParameter < secondParameter) {
-                        setParameter(writePosition, 1);
-                    } else{
-                        setParameter(writePosition, 0);
-                    }
-                    count += 4;
-                    break;
-                }
-                case 8: {
-                    firstParameter = getParameter(1);
-                    secondParameter = getParameter(2);
-                    int writePosition = getPosition(3);
-                    if (firstParameter == secondParameter) {
-                        setParameter(writePosition,1);
-                    } else {
-                        setParameter(writePosition,0);
-                    }
-                    count += 4;
-                    break;
-                }
-                case 9: {
-                    relativeBase += getParameter(1);
-                    count+=2;
-                }
-                default: {
-                    throw new IllegalStateException("unknown opcode :" + oppCode);
-                }
-            }
-            halted = (inputProgram.get(count) == 99);
+    long getParameterValue(long parameterMode, long paramValue) {
+        if(parameterMode == 0) {
+            return getParameterValueFromMemory((getParameterValueFromMemory(paramValue)));
         }
-        return result;
+        else if (parameterMode == 1) {
+            return getParameterValueFromMemory(paramValue);
+        }
+        else if (parameterMode == 2) {
+            return getParameterValueFromMemory(relativeBase + getParameterValueFromMemory(paramValue));
+        }
+        else {
+            throw new RuntimeException("unexpected parameterMode");
+        }
+    }
+
+    long getParameterValueFromMemory(Long index) {
+        if(index >= programMem.size()) {
+            return extraTerrestrialMemory.getOrDefault(index, 0L);
+        }
+        else {
+            return programMem.get(index.intValue());
+        }
+    }
+
+    void setParameterValueToMemory(Long index, Long value){
+        if(index >= programMem.size()) {
+            extraTerrestrialMemory.put(index,value);
+        }
+        else {
+            programMem.set(index.intValue(), value);
+        }
     }
 }
 
