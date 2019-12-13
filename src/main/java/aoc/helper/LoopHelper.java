@@ -67,7 +67,7 @@ public class LoopHelper {
         }
     }
 
-    public static void nestedLoop(Character[][] values, BiConsumer<Integer, Integer> consumer) {
+    public static void nestedLoop(Long[][] values, BiConsumer<Integer, Integer> consumer) {
         for (int i = 0; i < values.length; i++) {
             for (int k = 0; k < values[i].length; k++) {
                 consumer.accept(i, k);

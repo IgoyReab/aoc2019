@@ -9,6 +9,8 @@ public class Day11 implements Day {
 
     @Override
     public String part1(List<String> input) {
+
+
         return input.isEmpty() ? "" : "";
     }
 
