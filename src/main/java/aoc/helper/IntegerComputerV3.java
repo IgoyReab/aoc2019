@@ -126,7 +126,6 @@ public class IntegerComputerV3 {
                 case 6: {
                     firstParameter = getParameter(1);
                     secondParameter = getParameter(2);
-                    count += 3;
                     if (firstParameter == 0) {
                         count = (int) secondParameter;
                     } else {

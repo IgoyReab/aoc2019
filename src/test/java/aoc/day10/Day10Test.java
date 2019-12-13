@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 public class Day10Test {
 
     @Test
@@ -15,7 +17,7 @@ public class Day10Test {
         input = Arrays.asList(".#..#",".....","#####","....#","...##");
 
         result = new Day10().part1(input);
- //       assertEquals("8", result);
+        assertEquals("8", result);
     }
 
     @Test
@@ -25,7 +27,7 @@ public class Day10Test {
         input = Arrays.asList("......#.#.", "#..#.#....", "..#######.", ".#.#.###..", ".#..#.....", "..#....#.#", "#..#....#.", ".##.#..###", "##...#..#.", ".#....####");
 
         result = new Day10().part1(input);
- //       assertEquals("33", result);
+        assertEquals("33", result);
     }
 
     @Test
@@ -36,7 +38,7 @@ public class Day10Test {
         input = Arrays.asList(".#..#..###", "####.###.#", "....###.#.", "..###.##.#", "##.##.#.#.", "....###..#", "..#.#..#.#", "#..#.#.###", ".##...##.#", ".....#.#..");
 
         result = new Day10().part1(input);
-   //     assertEquals("35", result);
+        assertEquals("41", result);
     }
 
     @Test
@@ -51,7 +53,7 @@ public class Day10Test {
                 ".#.#.###########.###", "#.#.#.#####.####.###", "###.##.####.##.#..##");
 
         result = new Day10().part1(input);
-      //  assertEquals("210", result);
+        assertEquals("210", result);
 
     }
     @Test
@@ -59,10 +61,14 @@ public class Day10Test {
         List<String> input;
         String result;
 
-        input = Arrays.asList("1","2");
+        input = Arrays.asList(".#..##.###...#######", "##.############..##.", ".#.######.########.#", ".###.#######.####.#.",
+                "#####.##.#.##.###.##", "..#####..#.#########", "####################", "#.####....###.#.#.##",
+                "##.#################", "#####.##.###..####..", "..######..##.#######", "####.##.####...##..#",
+                ".#####..#.######.###", "##...#.##########...", "#.##########.#######", ".####.#.###.###.#.##", "....##.##.###..#####",
+                ".#.#.###########.###", "#.#.#.#####.####.###", "###.##.####.##.#..##");
 
         result = new Day10().part2(input);
-        //assertEquals("", result);
+        assertEquals("802", result);
 
     }
 }
