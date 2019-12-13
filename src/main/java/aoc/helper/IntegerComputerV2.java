@@ -1,10 +1,9 @@
-package aoc.intcodeComputer;
+package aoc.helper;
 
 import java.util.*;
 
+public class IntegerComputerV2 {
 
-
-public class IntcodeComputer {
 
     private List<Long> programMem;
     private Map<Long, Long> extraTerrestrialMemory;
@@ -16,7 +15,7 @@ public class IntcodeComputer {
     private Queue<Long> outputs = new LinkedList<>();
 
 
-    public IntcodeComputer(List<Long> input) {
+    public IntegerComputerV2(List<Long> input) {
         programMem =  input;
 
         extraTerrestrialMemory = new HashMap<>();
@@ -115,7 +114,7 @@ public class IntcodeComputer {
         }
     }
 
-    private static boolean isThreeParameterOpCode(long opCode) {
+    private boolean isThreeParameterOpCode(long opCode) {
         return opCode == 1 || opCode == 2 || opCode == 7 || opCode == 8;
     }
 
@@ -152,3 +151,4 @@ public class IntcodeComputer {
         }
     }
 }
+
