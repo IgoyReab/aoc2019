@@ -47,21 +47,21 @@ public class Day12 implements Day {
             jupiter.applyGravityAndVelocity();
 
             if (xCount == -1) {
-                xCount = backToStart(initialX, initialVelocityA,
+                xCount = backToInitial(initialX, initialVelocityA,
                         jupiter.moons.stream().map(moon -> moon.getPosition().getX()).collect(Collectors.toList()),
                         jupiter.moons.stream().map(moon -> moon.getVelocity().getA()).collect(Collectors.toList()),
                         result);
             }
 
             if (yCount == -1) {
-                yCount = backToStart(initialY, initialVelocityB,
+                yCount = backToInitial(initialY, initialVelocityB,
                         jupiter.moons.stream().map(moon -> moon.getPosition().getY()).collect(Collectors.toList()),
                         jupiter.moons.stream().map(moon -> moon.getVelocity().getB()).collect(Collectors.toList()),
                         result);
             }
 
             if (zCount == -1) {
-                zCount = backToStart(initialZ, initialVelocityC,
+                zCount = backToInitial(initialZ, initialVelocityC,
                         jupiter.moons.stream().map(moon -> moon.getPosition().getZ()).collect(Collectors.toList()),
                         jupiter.moons.stream().map(moon -> moon.getVelocity().getC()).collect(Collectors.toList()),
                         result);
@@ -75,7 +75,7 @@ public class Day12 implements Day {
         return input.isEmpty() ? "" : String.valueOf(calcLeastCommonMultiple(xCount, yCount, zCount));
     }
 
-   private static long backToStart(List<Integer> initial, List<Integer> initialVelocity, List<Integer> current, List<Integer> currentVelocity, long result) {
+   private static long backToInitial(List<Integer> initial, List<Integer> initialVelocity, List<Integer> current, List<Integer> currentVelocity, long result) {
         if(initial.equals(current) && currentVelocity.equals(initialVelocity)) {
             return result;
         }
