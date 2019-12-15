@@ -1,6 +1,5 @@
 package aoc.day14;
 
-import aoc.day25.Day25;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -15,10 +14,15 @@ public class Day14Test {
         List<String> input;
         String result;
 
-        input = Arrays.asList("1","2");
+        input = Arrays.asList("10 ORE => 10 A",
+        "1 ORE => 1 B",
+        "7 A, 1 B => 1 C",
+        "7 A, 1 C => 1 D",
+        "7 A, 1 D => 1 E",
+        "7 A, 1 E => 1 FUEL");
 
         result = new Day14().part1(input);
-        assertEquals("", result);
+        assertEquals("31", result);
     }
 
     @Test

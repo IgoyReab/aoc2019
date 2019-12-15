@@ -1,7 +1,7 @@
 package aoc.day13;
 
 import aoc.Day;
-import aoc.helper.IntegerComputerV5;
+import aoc.helper.IntegerComputerV6;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,8 +14,8 @@ public class Day13 implements Day {
                 .map(Long::valueOf)
                 .collect(Collectors.toList());
 
-        IntegerComputerV5 computer = new IntegerComputerV5(longInput);
-        computer.runProgram();
+        IntegerComputerV6 computer = new IntegerComputerV6(longInput);
+        computer.runComputer();
 
         Map<Position, Tile> board = new HashMap<>();
         addTilesToBoard(computer.getOutputs(), board, null);
@@ -33,12 +33,12 @@ public class Day13 implements Day {
                 .collect(Collectors.toList());
 
         longInput.set(0,(long)2);
-        IntegerComputerV5 computer = new IntegerComputerV5(longInput);
+        IntegerComputerV6 computer = new IntegerComputerV6(longInput);
         ScoreBoard scoreBoard = new ScoreBoard();
         Map<Position, Tile> board = new HashMap<>();
         boolean notDone = true;
         while(notDone) {
-            String exitCode = computer.runProgram();
+            String exitCode = computer.runComputer();
 
             addTilesToBoard(computer.getOutputs(), board, scoreBoard);
 
