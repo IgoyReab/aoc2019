@@ -1,76 +1,138 @@
 package aoc.day14;
 
 import aoc.Day;
-import lombok.Data;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Day14 implements Day {
 
-    @Data
     public class Element {
-        String name;
-        Integer resultingAmount;
+        private String name;
+        private HashMap<Element, Integer> ingredients = new HashMap<>();
+        private int amountGenerated;
+        private long leftOver;
 
-        List<Formula> formulas;
-
-        public Element(int a, String e) {
-            this.resultingAmount = a;
-            this.name = e;
-            formulas = new ArrayList<>();
+        public Element(String name) {
+            this.name = name;
         }
 
-        public void addFormula(int a, String e) {
-            formulas.add(new Formula(a, e));
+        public void addIngredient(Element chem, int amount) {
+            ingredients.put(chem, amount);
+        }
+
+        public void setAmountGenerated(int amountGenerated) {
+            this.amountGenerated = amountGenerated;
+        }
+
+        public long calculateAmount(long needed) {
+            if (this.name.equals("ORE")) return needed;
+
+            long originalNeeded = needed;
+            needed -= leftOver;
+            leftOver = leftOver - originalNeeded < 0 ? 0 : leftOver - originalNeeded;
+
+            if(needed <= 0) return 0;
+
+            long times = 1;
+            if (needed > amountGenerated) {
+                times = needed / amountGenerated;
+                if (needed % amountGenerated != 0) times++;
+            }
+
+            leftOver += times * amountGenerated - needed;
+
+            long total = 0;
+
+            for (Map.Entry<Element, Integer> ingredient : ingredients.entrySet()) {
+                total += ingredient.getKey().calculateAmount(times * ingredient.getValue());
+            }
+
+            return total;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 
-    @Data
-    public class Formula {
-        String name;
-        Integer amount;
-
-        public  Formula (int a, String e) {
-            this.name = e;
-            this.amount = a;
+    private Element getOrCreateChem(String name) {
+        Element chem;
+        if (chems.containsKey(name)) {
+            chem = chems.get(name);
+        } else {
+            chem = new Element(name);
+            chems.put(chem.getName(), chem);
         }
-    }
-    List<Element> elements = new ArrayList<>();
 
-    public Element findElement(String n) {
-        for (Element f: elements) {
-            if (f.getName().equals(n)) return f;
-        }
-        return null;
+        return chem;
     }
+
+    private HashMap<String, Element> chems = new HashMap<>();
+
+    int amountOre = 0;
 
     @Override
     public String part1(List<String> input) {
-        for(String s : input) {
-            String[] s1 = s.split(" => ");
-            String[] s2 = s1[1].split(" ");
-            elements.add(new Element(Integer.valueOf(s2[0]),s2[1]));
-        }
 
-        for(String s : input) {
-            String[] s1 = s.split(" => ");
-            String[] s2 = s1[1].split(" ");
-            String[] s3 = s1[0].split(", ");
-            for (String s4 : s3) {
-                String[] s5 = s4.split(" ");
-                Element foundElement = findElement(s2[1]);
-                foundElement.addFormula(Integer.valueOf(s5[0]), s5[1]);
+        for (String line : input) {
+            String[] splitOffResult = line.split(" => ");
+            String[] ingredients = splitOffResult[0].split(", ");
+            String chemResult = splitOffResult[1];
+            String resultName = chemResult.split(" ")[1];
+            String resultAmount = chemResult.split(" ")[0];
+
+            Element chem = getOrCreateChem(resultName);
+            chem.setAmountGenerated(Integer.parseInt(resultAmount));
+
+            for (String ingredient : ingredients) {
+                String[] chemAndAmount = ingredient.split(" ");
+
+                Element iChem = getOrCreateChem(chemAndAmount[1]);
+                chem.addIngredient(iChem, Integer.parseInt(chemAndAmount[0]));
             }
         }
 
-        Element fuel = findElement("FUEL");
+        long result = chems.get("FUEL").calculateAmount(1);
+        System.out.println("Result = " + result);
 
-        return input.isEmpty() ? "" : "";
+        return input.isEmpty() ? "" : String.valueOf(result);
     }
 
     @Override
     public String part2(List<String> input) {
-        return input.isEmpty() ? "" : "";
+        for (String line : input) {
+            String[] splitOffResult = line.split(" => ");
+            String[] ingredients = splitOffResult[0].split(", ");
+            String chemResult = splitOffResult[1];
+            String resultName = chemResult.split(" ")[1];
+            String resultAmount = chemResult.split(" ")[0];
+
+            Element chem = getOrCreateChem(resultName);
+            chem.setAmountGenerated(Integer.parseInt(resultAmount));
+
+            for (String ingredient : ingredients) {
+                String[] chemAndAmount = ingredient.split(" ");
+
+                Element iChem = getOrCreateChem(chemAndAmount[1]);
+                chem.addIngredient(iChem, Integer.parseInt(chemAndAmount[0]));
+            }
+        }
+
+        long result = chems.get("FUEL").calculateAmount(1);
+        long amount = 1000000000000L / result;
+        long y=0;
+        for (long x=1000000 ; x<1200000 ; x++) {
+            result = chems.get("FUEL").calculateAmount(x);
+            if (result>=1000000000000L) {
+                amount = y;
+                break;
+            }
+            y=x;
+        }
+        return input.isEmpty() ? "" : String.valueOf(amount);
     }
+
+
 }
