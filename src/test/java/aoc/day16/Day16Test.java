@@ -74,6 +74,7 @@ public class Day16Test {
         input = Arrays.asList("02935109699940807407585447034323");
 
         result = new Day16().part2(input);
+ //       assertEquals("78725270", result);
         assertEquals("78725270", result);
 
     }
@@ -87,6 +88,7 @@ public class Day16Test {
 
         result = new Day16().part2(input);
         assertEquals("53553731", result);
+      //  assertEquals("53553731", result);
 
     }
 }

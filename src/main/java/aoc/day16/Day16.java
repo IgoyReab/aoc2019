@@ -4,9 +4,11 @@ import aoc.Day;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.lang.Math.abs;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 public class Day16 implements Day {
 
@@ -39,7 +41,6 @@ public class Day16 implements Day {
         return result;
     }
 
-
     @Override
     public String part1(List<String> input) {
 
@@ -47,9 +48,9 @@ public class Day16 implements Day {
         List<Character> chars = input.get(0)
                 .chars()
                 .mapToObj(e -> (char)e)
-                .collect(Collectors.toList());
+                .collect(toList());
 
-        List<Integer> inputList = chars.stream().map(e -> Integer.parseInt(String.valueOf(e))).collect(Collectors.toList());
+        List<Integer> inputList = chars.stream().map(e -> Integer.parseInt(String.valueOf(e))).collect(toList());
 
         System.out.println(inputList);
 
@@ -75,16 +76,16 @@ public class Day16 implements Day {
         List<Character> chars = input.get(0)
                 .chars()
                 .mapToObj(e -> (char)e)
-                .collect(Collectors.toList());
+                .collect(toList());
 
-        List<Integer> initialList = chars.stream().map(e -> Integer.parseInt(String.valueOf(e))).collect(Collectors.toList());
+        List<Integer> initialList = chars.stream().map(e -> Integer.parseInt(String.valueOf(e))).collect(toList());
 
         String offSet = "";
         for (int count=0; count<7; count++) {
             offSet = offSet + initialList.get(count);
         }
 
-        int offSetNum = Integer.parseInt(offSet);
+        long offSetNum = Long.parseLong(offSet);
 
         List<Integer> inputList = new ArrayList<>();
 
@@ -92,27 +93,26 @@ public class Day16 implements Day {
             inputList.addAll(initialList);
         }
 
-        List<Integer> parseList = new ArrayList<>();
-        parseList.add(0);
-        parseList.add(1);
-        parseList.add(0);
-        parseList.add(-1);
+        List<Integer> finalInputList = inputList;
+        inputList = IntStream.range(0, inputList.size())
+                .skip(offSetNum)
+                .map(index -> finalInputList.get(index))
+                .boxed()
+                .collect(toList());
 
-        System.out.println(parseList);
 
-        List<Integer> result = parsePhase(inputList, parseList);
-        for (int x=1; x<100; x++) {
-            result = parsePhase(result, parseList);
+        for (int x=0; x<100; x++) {
+            int resulting = 0;
+            for(int position = inputList.size() - 1; position >= 0; position--) {
+                resulting += inputList.get(position);
+                resulting = Math.abs(resulting%10);
+                inputList.set(position, resulting);
+            }
         }
 
-        String resultString = "";
-        for (int count=offSetNum; count<offSetNum+8; count++) {
-            resultString = resultString + result.get(count);
-        }
-
-        System.out.println(resultString);
-
-
-        return input.isEmpty() ? "" : resultString;
+        return input.isEmpty() ? "" : inputList.stream()
+                .limit(8)
+                .map(String::valueOf)
+                .collect(joining(""));
     }
 }
