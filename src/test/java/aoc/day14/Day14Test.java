@@ -123,7 +123,7 @@ public class Day14Test {
                 "7 A, 1 E => 1 FUEL");
 
         result = new Day14().part2(input);
-        assertEquals("341860327", result);
+        assertEquals("32258064516", result);
     }
 //
 //    @Test
