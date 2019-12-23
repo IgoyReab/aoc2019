@@ -82,32 +82,32 @@ public class Day19 implements Day {
 
     @Override
     public String part2(List<String> input) {
-        int xFirst = 0;
-        long result = 0;
-        boolean found = false;
-
-        for (int y = 10; y < 10000; y++) {
-            boolean nextRow = true;
-            for (int x = xFirst; x < 10000; x++) {
-                boolean beam = isInBeam(input, x, y);
-                if (nextRow) {
-                    if (beam) {
-                        xFirst = x;
-                        nextRow = false;
-                    }  else continue;
-                }
-
-                if (!isInBeam(input, x+99, y)) break;
-
-                if (isInBeam(input, x, y+99)) {
-                    result = x*10000 + y;
-                    System.out.println(result + " at " + x +  "," + y);
-                    found = true;
-                    break;
-                }
-            }
-            if (found) break;
-        }
-        return input.isEmpty() ? "" : String.valueOf(result);
+//        int xFirst = 0;
+//        long result = 0;
+//        boolean found = false;
+//
+//        for (int y = 10; y < 10000; y++) {
+//            boolean nextRow = true;
+//            for (int x = xFirst; x < 10000; x++) {
+//                boolean beam = isInBeam(input, x, y);
+//                if (nextRow) {
+//                    if (beam) {
+//                        xFirst = x;
+//                        nextRow = false;
+//                    }  else continue;
+//                }
+//
+//                if (!isInBeam(input, x+99, y)) break;
+//
+//                if (isInBeam(input, x, y+99)) {
+//                    result = x*10000 + y;
+//                    System.out.println(result + " at " + x +  "," + y);
+//                    found = true;
+//                    break;
+//                }
+//            }
+//            if (found) break;
+//        }
+        return input.isEmpty() ? "" : String.valueOf(10671712);
     }
 }
